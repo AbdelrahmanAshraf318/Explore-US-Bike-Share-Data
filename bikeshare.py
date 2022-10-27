@@ -6,6 +6,17 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
+
+
+def display_data(df):
+    show_data = "yes"
+    counter = 0
+    while show_data == "yes" or counter >= len(df):
+        print(df[counter:counter+5])
+        counter += 5
+        show_data = input('\nWould you like to see more rows of this data? Enter yes or no.\n')
+        show_data = show_data.lower()
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -23,23 +34,24 @@ def get_filters():
             cities = ['chicago' , 'new york city' , 'washington']
             while not city in cities:
                 city = input("Would you like to see data for Chicago, New York city, or Washington: ")
+                if not city in cities:
+                    print("Please! Enter one of the given words (Chicago, New York City, or Washington)")
                 city = city.lower()
             break
         except Exception as e:
             print("Exception occurred: {}".format(e))
 
-    show_data = "yes"
-    counter = 0
-    df = pd.read_csv(CITY_DATA[city])
-    while show_data == "yes":
-        print(df[counter:counter+5])
-        counter += 5
-        show_data = input('\nWould you like to see more rows of this data? Enter yes or no.\n')
-        show_data = show_data.lower()
+
 
     month = "all"
     day = "all"
-    specified_filter = input('Would you like to filter the data by month, day, both, or not at all? Type "none" for no time filter: ')
+    available_filters = ['month', 'day', 'both', 'none']
+    specified_filter = ''
+    while not specified_filter in available_filters:
+        specified_filter = input('Would you like to filter the data by month, day, both, or not at all? Type "none" for no time filter: ').lower()
+        if not specified_filter in available_filters:
+            print("Please! Enter one of the given options")
+
     if specified_filter == "none":
         month = "all"
         day = "all"
@@ -52,6 +64,8 @@ def get_filters():
                 months = ['january', 'february', 'march', 'april', 'may', 'june']
                 while not month in months:
                     month = input("Which month? January, February, March, April, May, OR June? Please type out the full month name: ")
+                    if not month.lower() in months:
+                        print("Please! Enter the name of the months from the given months ONLY")
                     month = month.lower()
                 break
             except Exception as e:
@@ -61,11 +75,12 @@ def get_filters():
         while True:
             try:
                 temp_day = ""
-                days = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
+                days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'satuarday', 'sunday']
                 while not temp_day in days:
-                    temp_day = input("Which day? Please type a day M, Tu, W, Th, F, Sa, Su: ")
-
-                day = temp_day
+                    temp_day = input("Which day? Please type a day Monday, Tuesday, Wednesday, Thursday, Friday, Satuarday, Sunday: ").lower()
+                    if not temp_day in days:
+                        print("Please! Enter one of the given days")
+                day = days.index(temp_day)
                 break
             except Exception as e:
                 print("Exception occurred: {}".format(e))
@@ -77,6 +92,8 @@ def get_filters():
                 months = ['january', 'february', 'march', 'april', 'may', 'june']
                 while not month in months:
                     month = input("Which month? January, February, March, April, May, OR June? Please type out the full month name: ")
+                    if not month.lower() in months:
+                        print("Please! Enter the name of the months from the given months ONLY")
                     month = month.lower()
                 break
             except Exception as e:
@@ -86,11 +103,12 @@ def get_filters():
         while True:
             try:
                 temp_day = ""
-                days = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su']
+                days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'satuarday', 'sunday']
                 while not temp_day in days:
-                    temp_day = input("Which day? Please type a day M, Tu, W, Th, F, Sa, Su: ")
-
-                day = temp_day
+                    temp_day = input("Which day? Please type a day Monday, Tuesday, Wednesday, Thursday, Friday, Satuarday, Sunday: ").lower()
+                    if not temp_day in days:
+                        print("Please! Enter one of the given days")
+                day = days.index(temp_day)
                 break
             except Exception as e:
                 print("Exception occurred: {}".format(e))
@@ -137,10 +155,11 @@ def load_data(city, month, day):
     # filter by day of week if applicable
     if day != 'all':
         # filter by day of week to create the new dataframe
+        days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'satuarday', 'sunday']
         day = day.lower()
-        days = ['m', 'tu', 'w', 'th', 'f', 'sa', 'su']
         day = days.index(day)
         df = df[df['day_of_week'] == day]
+
 
     return df
 
@@ -238,6 +257,17 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+
+        answer = ''
+        available_answers = ['yes', 'no']
+        while not answer in available_answers:
+            answer = input("Do you want to see 5 rows of data? ").lower()
+            if not answer in available_answers:
+                print("Please! Enter a valid answer")
+            else:
+                if answer == 'no':
+                    break
+                display_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
