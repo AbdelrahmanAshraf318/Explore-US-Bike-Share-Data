@@ -33,7 +33,7 @@ def get_filters():
             city = ""
             cities = ['chicago' , 'new york city' , 'washington']
             while not city in cities:
-                city = input("Would you like to see data for Chicago, New York city, or Washington: ")
+                city = input("Would you like to see data for Chicago, New York city, or Washington: ").lower()
                 if not city in cities:
                     print("Please! Enter one of the given words (Chicago, New York City, or Washington)")
                 city = city.lower()
@@ -63,10 +63,9 @@ def get_filters():
                 month = ""
                 months = ['january', 'february', 'march', 'april', 'may', 'june']
                 while not month in months:
-                    month = input("Which month? January, February, March, April, May, OR June? Please type out the full month name: ")
+                    month = input("Which month? January, February, March, April, May, OR June? Please type out the full month name: ").lower()
                     if not month.lower() in months:
                         print("Please! Enter the name of the months from the given months ONLY")
-                    month = month.lower()
                 break
             except Exception as e:
                 print("Exception occurred: {}".format(e))
@@ -91,10 +90,9 @@ def get_filters():
                 month = ""
                 months = ['january', 'february', 'march', 'april', 'may', 'june']
                 while not month in months:
-                    month = input("Which month? January, February, March, April, May, OR June? Please type out the full month name: ")
+                    month = input("Which month? January, February, March, April, May, OR June? Please type out the full month name: ").lower()
                     if not month.lower() in months:
                         print("Please! Enter the name of the months from the given months ONLY")
-                    month = month.lower()
                 break
             except Exception as e:
                 print("Exception occurred: {}".format(e))
